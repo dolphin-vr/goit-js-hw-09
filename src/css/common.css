@@ -10,9 +10,32 @@ body {
   background-color: #fafafa;
   color: #212121;
   line-height: 1.5;
+  padding: 0 20px;
 }
 
 img {
   display: block;
   max-width: 100%;
+}
+
+.timer{
+  display: flex;
+  margin-top: 30px;
+  gap: 40px;
+}
+
+.field{
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  font-weight: 500;
+}
+
+.value{
+  font-size: 44px;
+}
+
+.label{
+  text-transform: uppercase;
 }
