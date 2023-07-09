@@ -8,7 +8,6 @@ let colorId = null;
 refs.btnStart.addEventListener('click', onStart);
 refs.btnStop.addEventListener('click', onStop);
 
-console.dir(refs.body)
 function onStart(){
    refs.btnStart.disabled=true;
    refs.btnStop.disabled=false;
