@@ -12,7 +12,8 @@ form.addEventListener('submit', onSubmit);
 function onSubmit(ev){
   ev.preventDefault();
 
-  for (let i = 1, timeout = Number(form.delay.value); i <= Number(form.amount.value); i++, timeout+=Number(form.step.value)) {
+  let timeout = Number(form.delay.value);
+  for (let i = 1; i <= Number(form.amount.value); i++) {
     createPromise(i, timeout)
     .then(({ position, delay }) => {
       Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`, optNotiflx);
@@ -20,6 +21,7 @@ function onSubmit(ev){
     .catch(({ position, delay }) => {
       Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`, optNotiflx);
     });
+    timeout+=Number(form.step.value);
   }
 }
 
