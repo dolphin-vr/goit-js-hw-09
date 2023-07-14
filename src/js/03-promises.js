@@ -1,3 +1,10 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
+const optNotiflx = {
+  timeout: 3000,
+  useIcon: false,
+};
+
 const form = document.querySelector('.form');
 
 form.addEventListener('submit', onSubmit);
@@ -8,10 +15,10 @@ function onSubmit(ev){
   for (let i = 1, timeout = Number(form.delay.value); i <= Number(form.amount.value); i++, timeout+=Number(form.step.value)) {
     createPromise(i, timeout)
     .then(({ position, delay }) => {
-      console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+      Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`, optNotiflx);
     })
     .catch(({ position, delay }) => {
-      console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+      Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`, optNotiflx);
     });
   }
 }
