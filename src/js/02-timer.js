@@ -2,10 +2,15 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
+const optNotiflx = {
+   timeout: 3000,
+ };
 let timeDiff = 0;
+let id=null;
 const refs = {
    calendar: document.querySelector('#datetime-picker'),
    btnStart: document.querySelector('[data-start]'),
+   btnReset: document.querySelector('[data-reset]'),
    days: document.querySelector('[data-days]'),
    hours: document.querySelector('[data-hours]'),
    minutes: document.querySelector('[data-minutes]'),
@@ -13,6 +18,7 @@ const refs = {
 }
 
 refs.btnStart.disabled=true;
+refs.btnReset.disabled=true;
 
 const options = {
    enableTime: true,
@@ -22,7 +28,7 @@ const options = {
    onClose(selectedDates) {
      timeDiff = selectedDates[0] - new Date();
      if (timeDiff<1){
-      alert('choose date in future');
+      Notify.failure('Please choose date in the future', optNotiflx);
       timeDiff = 0
      }else{
       refs.btnStart.disabled=false;
@@ -33,20 +39,28 @@ const options = {
 flatpickr(refs.calendar, options);
 
 refs.btnStart.addEventListener('click', countDown);
+refs.btnReset.addEventListener('click', countReset);
 
 function countDown(){
    refs.btnStart.disabled=true;
-   const id =setInterval(showTimer, 1000);
+   refs.btnReset.disabled=false;
+   id =setInterval(showTimer, 1000);
    setTimeout(()=>clearInterval(id), timeDiff+1000)
 }
 
 function showTimer(){
    const timeCounter = convertMs(timeDiff);
    timeDiff-=1000;
-   refs.days.textContent=timeCounter.days;
-   refs.hours.textContent=timeCounter.hours;
-   refs.minutes.textContent=timeCounter.minutes;
-   refs.seconds.textContent=timeCounter.seconds;
+   refs.days.textContent=String(timeCounter.days).padStart(2, '0');
+   refs.hours.textContent=String(timeCounter.hours).padStart(2, '0');
+   refs.minutes.textContent=String(timeCounter.minutes).padStart(2, '0');
+   refs.seconds.textContent=String(timeCounter.seconds).padStart(2, '0');
+}
+
+function countReset(){
+   timeDiff = 0;
+   clearInterval(id);
+   showTimer()
 }
 
 function convertMs(ms) {
